@@ -51,7 +51,6 @@ async function start() {
   // Create user in db and in cache
   try {
     await User.cache().create({
-      id: 1,
       name: 'Daniel',
     })
   } catch (error) {
@@ -62,16 +61,26 @@ async function start() {
   await User.cache().findByPk(1)
   await User.cache().findByPk(1)
   await User.cache().findByPk(1)
-  const user = await User.cache().findByPk(1)
+  await User.cache().findByPk(1)
 
-  // Update in db and cache
   try {
-    await user.cache().update({
-      id: 1,
-      name: 'Vikki',
+    await User.cache().create({
+      name: 'Daniel',
+    })
+    await User.cache().create({
+      name: 'Daniel1',
+    })
+    await User.cache().create({
+      name: 'Danieli2',
+    })
+    await User.cache().create({
+      name: 'Danieli3',
+    })
+    await User.cache().create({
+      name: 'Danieli4',
     })
   } catch (error) {
-    console.error('update: ', error)
+    console.error('create: ', error)
   }
 
   // Cache result of arbitrary query - requires cache key
@@ -79,12 +88,25 @@ async function start() {
     await User.cache('find-dan').findAll({
       where: {
         name: {
-          [Sequelize.Op.like]: 'Dan',
+          [Sequelize.Op.like]: 'Dan%',
         },
       },
     })
   } catch (error) {
     console.error('findAll: ', error)
+  }
+
+  // Update in db and cache
+  try {
+    const user = await User.cache().create({
+      name: 'Dene',
+    })
+    await user.cache().update({
+      id: user.id,
+      name: 'Vikki',
+    })
+  } catch (error) {
+    console.error('update: ', error)
   }
   kvm.destroy()
   process.exit()
