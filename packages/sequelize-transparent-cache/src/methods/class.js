@@ -37,7 +37,7 @@ function buildAutoMethods(client, model) {
   }
 }
 
-function buildManualMethods(client, model, customKey) {
+function buildManualMethods(client, model, customKey, ttl = undefined) {
   return {
     client() {
       return client
@@ -51,7 +51,7 @@ function buildManualMethods(client, model, customKey) {
 
         return model.findAll
           .apply(model, arguments)
-          .then((instances) => cache.saveAll(client, model, instances, customKey))
+          .then((instances) => cache.saveAll(client, model, instances, customKey, ttl))
       })
     },
     findOne() {
@@ -60,7 +60,7 @@ function buildManualMethods(client, model, customKey) {
           return instance
         }
 
-        return model.findOne.apply(model, arguments).then((instance) => cache.save(client, instance, customKey))
+        return model.findOne.apply(model, arguments).then((instance) => cache.save(client, instance, customKey, ttl))
       })
     },
     clear() {
