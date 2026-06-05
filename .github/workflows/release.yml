@@ -38,6 +38,10 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Execute Lerna versioning and publishing without tokens
       - name: Publish to npm via Lerna
