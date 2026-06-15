@@ -5,7 +5,7 @@ const MemcachePlusAdaptor = require('..')
 const memcachePlusAdaptor = new MemcachePlusAdaptor({
   client: memcachePlus,
   namespace: 'model',
-  lifetime: 60 * 60
+  lifetime: 60 * 60,
 })
 
 afterAll(() => memcachePlus.disconnect())
@@ -16,6 +16,10 @@ describe('Adaptor methods', () => {
 
   test('set', async () => {
     expect(await memcachePlusAdaptor.set(key, data)).toEqual(undefined)
+  })
+
+  test('set with ttl', async () => {
+    expect(await memcachePlusAdaptor.set(key, data, { ttl: 30 })).toEqual(undefined)
   })
 
   test('get', async () => {
